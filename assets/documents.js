@@ -21,7 +21,19 @@
   const esc = value => String(value).replace(/[&<>\"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;", "'":"&#39;"}[char]));
   const icon = `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V20.5H6z"></path><path d="M14 3.5v4h4M9 12h6M9 15.5h6"></path></svg>`;
   if (list) {
-    list.innerHTML = docs.map((doc, index) => `<details class="document-item" data-document-item data-status="${doc.status}" data-reveal${index === 0 ? " open" : ""}><summary><span class="document-icon">${icon}</span><span class="document-main"><small class="document-status ${doc.tone}"><i></i>${esc(doc.label)}</small><b>${esc(doc.title)}</b><em>${esc(doc.text)}</em></span><span class="document-field"><small>Version</small><strong>${esc(doc.version)}</strong></span><span class="document-field"><small>Stand</small><strong>${esc(doc.stand)}</strong></span><span class="document-field"><small>Zuständig</small><strong>${esc(doc.owner)}</strong></span><span class="document-action">${doc.href ? `<a href="${doc.href}">${esc(doc.action)} <span aria-hidden="true">→</span></a>` : `<span>${esc(doc.action)}</span>`}</span><i class="document-chevron" aria-hidden="true"></i></summary><div class="document-history"><div><strong>Versionsverlauf</strong><p>Änderungen und frühere öffentliche Fassungen werden hier nachvollziehbar gehalten.</p></div><ol>${doc.history.map(row => `<li><b>${esc(row[0])}</b><span>${esc(row[1])}</span><em>${esc(row[2])}</em></li>`).join("")}</ol></div></details>`).join("");
+    list.innerHTML = docs.map((doc, index) => `
+      <details class="document-item" data-document-item data-status="${doc.status}"${index === 0 ? " open" : ""}>
+        <summary>
+          <span class="document-title-cell"><span class="document-icon">${icon}</span><span class="document-main"><b>${esc(doc.title)}</b><em>${esc(doc.text)}</em></span></span>
+          <span class="document-status ${doc.tone}"><span class="sr-only">Status: </span><i aria-hidden="true"></i>${esc(doc.label)}</span>
+          <span class="document-field"><small>Version</small><strong><span class="sr-only">Version: </span>${esc(doc.version)}</strong></span>
+          <span class="document-field"><small>Stand</small><strong><span class="sr-only">Stand: </span>${esc(doc.stand)}</strong></span>
+          <span class="document-field"><small>Zuständig</small><strong><span class="sr-only">Zuständig: </span>${esc(doc.owner)}</strong></span>
+          <span class="document-action">${doc.href ? `<a href="${doc.href}">${icon}${esc(doc.action)}</a>` : `<span>${esc(doc.action)}</span>`}</span>
+          <i class="document-chevron" aria-hidden="true"></i>
+        </summary>
+        <div class="document-history"><div><strong>Versionsverlauf</strong><p>Änderungen und frühere Arbeitsstände werden hier nachvollziehbar gehalten. Nicht freigegebene Fassungen stehen nicht als Download bereit.</p></div><ol>${doc.history.map(row => `<li><b>${esc(row[0])}</b><span>${esc(row[1])}</span><em>${esc(row[2])}</em></li>`).join("")}</ol></div>
+      </details>`).join("");
   }
   const items = [...root.querySelectorAll("[data-document-item]")];
   const update = () => {

@@ -63,8 +63,15 @@
   let mapDistricts = [];
   let mapLabels = [];
   let items = [];
+  const mapModes = [...root.querySelectorAll("button[data-map-mode]")];
+  const chevron = '<svg class="ui-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"></path></svg>';
+  const setMapMode = mode => {
+    if (mapStage) mapStage.dataset.mapMode = mode;
+    mapModes.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.mapMode === mode)));
+    if (mode === "districts" && districtExplorer) districtExplorer.open = true;
+  };
 
-  if (list) list.innerHTML = keys.map(slug => `<a class="state-index-item" data-association-item data-state="${slug}" href="verband.html?land=${slug}"><i aria-hidden="true"></i><span>${esc(states[slug].name)}</span><small>Geplant</small><b aria-hidden="true">→</b></a>`).join("");
+  if (list) list.innerHTML = keys.map(slug => `<button type="button" class="state-index-item" data-association-item data-state="${slug}" aria-pressed="false" aria-label="${esc(states[slug].name)} auswählen – geplant"><i aria-hidden="true"></i><span>${esc(states[slug].name)}</span><small>Geplant</small>${chevron}</button>`).join("");
   items = [...root.querySelectorAll("[data-association-item]")];
 
   const setUrl = () => {
@@ -80,7 +87,7 @@
     const query = (districtSearch?.value || "").trim().toLocaleLowerCase("de");
     const own = mapDistricts.filter(item => item.dataset.stateKey === selected);
     const visible = own.filter(item => !query || item.dataset.districtName.toLocaleLowerCase("de").includes(query));
-    districtList.innerHTML = visible.map(item => `<button class="district-item${item.dataset.districtKey === selectedDistrict ? " selected" : ""}" type="button" data-district-item="${esc(item.dataset.districtKey)}"><span><b>${esc(item.dataset.districtName)}</b><small>${esc(districtLabel(item.dataset.districtType))}</small></span><i aria-hidden="true">→</i></button>`).join("");
+    districtList.innerHTML = visible.map(item => `<button class="district-item${item.dataset.districtKey === selectedDistrict ? " selected" : ""}" type="button" data-district-item="${esc(item.dataset.districtKey)}" aria-pressed="${item.dataset.districtKey === selectedDistrict}"><span><b>${esc(item.dataset.districtName)}</b><small>${esc(districtLabel(item.dataset.districtType))}</small></span>${chevron}</button>`).join("");
     districtList.querySelectorAll("[data-district-item]").forEach(button => button.addEventListener("click", () => selectDistrict(button.dataset.districtItem)));
     if (districtTitle) districtTitle.textContent = `Kreise in ${states[selected].name}`;
     if (districtCount) districtCount.textContent = `${visible.length} von ${own.length} Kreisen sichtbar`;
@@ -91,14 +98,15 @@
   const selectDistrict = key => {
     const district = mapDistricts.find(item => item.dataset.districtKey === key);
     if (!district) return;
+    setMapMode("districts");
     selectedDistrict = key;
     const stateKey = district.dataset.stateKey;
     if (stateKey !== selected) {
       selected = stateKey;
       updateState(false);
     }
-    mapDistricts.forEach(item => item.classList.toggle("map-district-selected", item === district));
-    districtList?.querySelectorAll("[data-district-item]").forEach(item => item.classList.toggle("selected", item.dataset.districtItem === selectedDistrict));
+    mapDistricts.forEach(item => { item.classList.toggle("map-district-selected", item === district); item.setAttribute("aria-pressed", String(item === district)); });
+    districtList?.querySelectorAll("[data-district-item]").forEach(item => { const active = item.dataset.districtItem === selectedDistrict; item.classList.toggle("selected", active); item.setAttribute("aria-pressed", String(active)); });
     if (districtSelected) districtSelected.innerHTML = `<strong>${esc(district.dataset.districtName)}</strong><span>${esc(districtLabel(district.dataset.districtType))} · ${esc(states[stateKey].name)}</span>`;
     setUrl();
   };
@@ -106,11 +114,11 @@
   const updateState = (writeUrl = true) => {
     if (!states[selected]) selected = "hessen";
     const state = states[selected];
-    mapStates.forEach(item => item.classList.toggle("map-state-selected", item.dataset.mapState === selected));
+    mapStates.forEach(item => { const active = item.dataset.mapState === selected; item.classList.toggle("map-state-selected", active); item.setAttribute("aria-pressed", String(active)); });
     mapLabels.forEach(item => item.classList.toggle("map-state-label-selected", item.dataset.stateLabel === selected));
-    mapDistricts.forEach(item => item.classList.toggle("map-district-selected", Boolean(selectedDistrict) && item.dataset.districtKey === selectedDistrict));
+    mapDistricts.forEach(item => { const active = Boolean(selectedDistrict) && item.dataset.districtKey === selectedDistrict; item.classList.toggle("map-district-selected", active); item.setAttribute("aria-pressed", String(active)); });
     mapDistricts.forEach(item => item.classList.toggle("map-state-district", item.dataset.stateKey === selected));
-    items.forEach(item => item.classList.toggle("selected", item.dataset.state === selected));
+    items.forEach(item => { const active = item.dataset.state === selected; item.classList.toggle("selected", active); item.setAttribute("aria-pressed", String(active)); });
     if (title) title.textContent = state.name;
     if (intro) intro.textContent = `Der geplante Landesbereich ${state.name} ist noch nicht formal gegründet. Hier können Sie Interesse am regionalen Aufbau unverbindlich mitteilen.`;
     if (focus) focus.textContent = state.focus;
@@ -123,7 +131,7 @@
     const query = (search?.value || "").trim().toLocaleLowerCase("de");
     let visible = 0;
     items.forEach(item => { const show = !query || states[item.dataset.state].name.toLocaleLowerCase("de").includes(query); item.hidden = !show; if (show) visible += 1; });
-    mapStates.forEach(item => { const name = states[item.dataset.mapState]?.name || ""; item.classList.toggle("map-dimmed", Boolean(query) && !name.toLocaleLowerCase("de").includes(query)); });
+    [...mapStates, ...mapDistricts, ...mapLabels].forEach(item => { const name = states[item.dataset.mapState || item.dataset.stateKey || item.dataset.stateLabel]?.name || ""; item.classList.toggle("map-dimmed", Boolean(query) && !name.toLocaleLowerCase("de").includes(query)); });
     if (count) count.textContent = `${visible} von ${keys.length} Bundesländern sichtbar`;
   };
 
@@ -136,6 +144,10 @@
       item.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selected = item.dataset.mapState; selectedDistrict = ""; updateState(); } });
     });
     mapDistricts.forEach(item => {
+      item.dataset.districtName = item.dataset.districtName.replace(/\s+city(?:\s+Städte)?$/i, "");
+      item.setAttribute("aria-label", `${item.dataset.districtName}, ${states[item.dataset.stateKey]?.name || ""}`);
+      const tooltip = item.querySelector("title");
+      if (tooltip) tooltip.textContent = `${item.dataset.districtName} · ${states[item.dataset.stateKey]?.name || ""}`;
       item.addEventListener("click", () => selectDistrict(item.dataset.districtKey));
       item.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectDistrict(item.dataset.districtKey); } });
     });
@@ -149,7 +161,11 @@
     try {
       const response = await fetch("assets/germany-map.svg", {headers:{Accept:"image/svg+xml"}});
       if (!response.ok) throw new Error(`Map ${response.status}`);
-      mapStage.innerHTML = await response.text();
+      const parsed = new DOMParser().parseFromString(await response.text(), "image/svg+xml");
+      const svg = parsed.documentElement;
+      if (parsed.querySelector("parsererror") || svg.localName !== "svg" || svg.querySelectorAll("[data-map-state]").length !== 16) throw new Error("Invalid map asset");
+      svg.setAttribute("role", "group");
+      mapStage.replaceChildren(document.importNode(svg, true));
       wireMap();
     } catch (_) {
       mapStage.innerHTML = `<div class="map-error" role="alert"><strong>Deutschlandkarte konnte nicht geladen werden.</strong><span>Bitte die Seite über einen Webserver aufrufen, nicht als lokale Datei.</span></div>`;
@@ -158,5 +174,8 @@
 
   search?.addEventListener("input", filterStates);
   districtSearch?.addEventListener("input", renderDistricts);
+  mapModes.forEach(button => button.addEventListener("click", () => setMapMode(button.dataset.mapMode)));
+  items.forEach(item => item.addEventListener("click", () => { selected = item.dataset.state; selectedDistrict = ""; if (districtSearch) districtSearch.value = ""; updateState(); }));
+  updateState(false);
   loadMap();
 })();

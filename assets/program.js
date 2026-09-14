@@ -62,7 +62,9 @@
   const filters = [...explorer.querySelectorAll("[data-program-filter]")];
   const count = explorer.querySelector("[data-program-count]");
   const empty = explorer.querySelector("[data-program-empty]");
-  let activeCategory = "all";
+  const requestedCategory = new URLSearchParams(location.search).get("thema");
+  let activeCategory = filters.some(filter => filter.dataset.programFilter === requestedCategory) ? requestedCategory : "all";
+  filters.forEach(filter => filter.setAttribute("aria-pressed", String(filter.dataset.programFilter === activeCategory)));
 
   const escape = value => String(value).replace(/[&<>\"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;", "'":"&#39;"}[char]));
 

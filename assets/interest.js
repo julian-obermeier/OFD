@@ -16,7 +16,7 @@
   const region = form.querySelector("[data-interest-region]");
   const submit = form.querySelector("[data-interest-submit]");
   const params = new URLSearchParams(location.search);
-  let active = params.get("weg") === "region" ? "region" : params.get("weg") === "programm" ? "general" : "founding";
+  let active = params.get("weg") === "region" ? "region" : "founding";
   const selectMode = mode => {
     const data = modes[mode] || modes.founding;
     active = modes[mode] ? mode : "founding";
@@ -35,6 +35,12 @@
     const label = form.querySelector('label[for="interest-region"]');
     if (label) label.innerHTML = active === "region" ? 'Bundesland / Region <span class="required-mark">*</span>' : 'Bundesland / Region <span class="optional">(optional)</span>';
   };
-  buttons.forEach(button => button.addEventListener("click", () => selectMode(button.dataset.interestMode)));
+  buttons.forEach(button => button.addEventListener("click", () => {
+    if (button.dataset.interestMode === "general") { location.assign("kontakt.html"); return; }
+    selectMode(button.dataset.interestMode);
+  }));
   selectMode(active);
+  if (params.get("land") && region) region.value = params.get("land");
+  if (params.get("weg") === "programm" && topic) topic.value = "Programmarbeit";
+  form.addEventListener("reset", () => { queueMicrotask(() => selectMode(active)); });
 })();

@@ -30,7 +30,22 @@ müssen diese Werte gesammelt angepasst werden.
 
 ## Lokale Vorschau
 
-Repository herunterladen und `index.html` im Browser öffnen. Für eine realistische Vorschau empfiehlt sich ein einfacher lokaler HTTP-Server.
+Repository herunterladen und im Projektverzeichnis `python -m http.server 4173`
+starten. Danach `http://localhost:4173/` öffnen. Die interaktive Karte benötigt
+einen HTTP-Server; ein direkter Aufruf über `file://` reicht dafür nicht aus.
+
+## Gestaltung nach den Bildvorlagen
+
+Programm, Dokumentenregister, Verbände sowie Kontakt- und Interessenformular
+verwenden den Referenzaufbau: redaktionelle Serifentitel, Marineblau/Rot,
+offene Kartenfläche, kompakte Zeilen und ein schmaler Service-Fußbereich.
+Die bestehenden OfD-Logos bleiben erhalten. Fiktive Namen, Beschlussstände,
+Kontaktdaten und Downloadlinks aus den Entwurfsbildern werden nicht übernommen.
+
+Die Verbändekarte startet auf der Bundeslandebene. Über **Landkreise anzeigen**
+wird die Kreisebene samt Suche eingeblendet. Auswahl per Karte oder Liste,
+Tastaturbedienung und Direktlinks mit `?land=…&kreis=…` werden unterstützt.
+Das Interessenformular übernimmt das gewählte Bundesland.
 
 ## GitHub-Pages-Deployment
 
@@ -100,8 +115,10 @@ auf „Gegründet“ geändert werden.
 Die Kartengeometrien stammen aus dem offenen Datensatz
 [`deutschlandGeoJSON`](https://github.com/isellsoap/deutschlandGeoJSON) und werden
 als lokal eingebettete, vereinfachte SVG-Datei ausgeliefert. Die Karte enthält
-die 16 Bundesländer sowie 434 Landkreise und kreisfreie Städte; externe
-Kartendienste oder JavaScript-CDNs werden dafür nicht benötigt.
+die 16 Bundesländer sowie 434 Kreisgeometrien des übernommenen Datensatzes;
+der Gebietsstand ist nicht als amtlich aktuell bestätigt. Die Darstellung
+verwendet eine längenkorrigierte geografische Projektion (Breitenbezug ca. 51°).
+Externe Kartendienste oder JavaScript-CDNs werden dafür nicht benötigt.
 
 
 ## PHP-Kontaktversand auf dem Webhosting

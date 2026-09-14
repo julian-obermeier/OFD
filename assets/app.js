@@ -8,24 +8,32 @@
     ["programm", "Programm", "programm.html"],
     ["verbaende", "Verbände", "verbaende.html"],
     ["aktuelles", "Aktuelles", "aktuelles.html"],
-    ["termine", "Termine", "termine.html"],
-    ["gruendung", "Gründung", "gruendung.html"]
+    ["mitmachen", "Mitmachen", "mitmachen.html"]
   ];
+  const serviceItems = [["termine", "Termine", "termine.html"], ["gruendung", "Gründung", "gruendung.html"], ["dokumente", "Dokumente", "dokumente.html"], ["kontakt", "Kontakt", "kontakt.html"]];
+  const darkHeader = ["dokumente", "kontakt", "interesse"].includes(page);
 
-  const navLinks = (mobile = false) => navItems.map(([id, label, href]) =>
-    `<a href="${href}"${page === id ? ' class="active" aria-current="page"' : ""}>${label}</a>`
-  ).join("") + (mobile ? '<a class="button button-primary" href="mitmachen.html">Mitmachen</a>' : "");
+  const navLinks = (mobile = false) => [...navItems, ...(mobile ? serviceItems : page === "kontakt" || page === "interesse" ? [["kontakt", "Kontakt", "kontakt.html"]] : [])].map(([id, label, href]) =>
+    `<a href="${href}" data-nav-item="${id}"${page === id ? ' class="active" aria-current="page"' : page === "interesse" && id === "mitmachen" ? ' class="active"' : ""}>${label}</a>`
+  ).join("");
+  const reversedBrand = `<span class="brand-wordmark" aria-hidden="true"><img src="assets/logos/ofd-wordmark-transparent.png" alt=""></span><span class="brand-name">Ordnung für<br>Deutschland</span>`;
+
+  const headerMotto = page === "verbaende"
+    ? "Starke Regionen.<br>Ein gemeinsames Deutschland."
+    : "Für ein<br>starkes Morgen.";
 
   const header = document.querySelector("[data-site-header]");
   if (header) {
     header.innerHTML = `
-      <header class="site-header">
+      <header class="site-header${darkHeader ? " site-header-dark" : ""}">
         <div class="shell nav-wrap">
           <a class="brand" href="index.html" aria-label="Ordnung für Deutschland – Startseite">
-            <span class="brand-logo-wide" aria-hidden="true"><picture><source srcset="assets/logos/ofd-horizontal.webp" type="image/webp"><img src="assets/logos/ofd-horizontal.png" alt=""></picture></span>
+            ${darkHeader ? reversedBrand : '<span class="brand-logo-wide" aria-hidden="true"><picture><source srcset="assets/logos/ofd-horizontal.webp" type="image/webp"><img src="assets/logos/ofd-horizontal.png" alt=""></picture></span>'}
           </a>
           <nav class="main-nav" aria-label="Hauptnavigation">${navLinks()}</nav>
-          <a class="nav-cta" href="mitmachen.html">Mitmachen</a>
+          ${page === "dokumente" ? '<a class="nav-cta" href="mitmachen.html">Mitmachen</a>' : ""}
+          <a class="nav-search" href="programm.html#program-search" aria-label="Programm durchsuchen"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.8"></circle><path d="m16.2 16.2 4.4 4.4"></path></svg></a>
+          <span class="header-motto">${headerMotto}</span>
           <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
         </div>
         <nav class="mobile-nav" id="mobile-menu" aria-label="Mobile Navigation">${navLinks(true)}</nav>
@@ -36,21 +44,13 @@
   if (footer) {
     footer.innerHTML = `
       <footer class="site-footer">
-        <div class="shell footer-main">
-          <div>
-            <a class="footer-brand-link" href="index.html" aria-label="Ordnung für Deutschland – Startseite">
-              <span class="footer-logo-lockup"><picture><source srcset="assets/logos/ofd-primary-transparent.webp" type="image/webp"><img src="assets/logos/ofd-primary-transparent.png" alt="Ordnung für Deutschland (OfD)" loading="lazy"></picture></span>
-            </a>
-            <p>Eine politische Initiative im Aufbau – für einen handlungsfähigen Staat, starke Kommunen und einen offenen demokratischen Dialog.</p>
-            <span class="dev-badge">Gründungsphase 2026</span>
-          </div>
-          <div><h3>Partei</h3><ul><li><a href="partei.html">Über die OfD</a></li><li><a href="team.html">Team & Verantwortung</a></li><li><a href="programm.html">Programmentwurf</a></li><li><a href="verbaende.html">Verbände</a></li></ul></div>
-          <div><h3>Mitgestalten</h3><ul><li><a href="mitmachen.html">Mitmachen</a></li><li><a href="gruendung.html">Gründungszentrum</a></li><li><a href="termine.html">Termine</a></li><li><a href="interesse.html">Interesse mitteilen</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="mitmachen.html#fragen">Häufige Fragen</a></li></ul></div>
-          <div><h3>Service & Transparenz</h3><ul><li><a href="aktuelles.html">Aktuelles</a></li><li><a href="presse.html">Presse & Medien</a></li><li><a href="dokumente.html">Dokumente</a></li><li><a href="transparenz.html">Transparenz</a></li></ul></div>
+        <div class="shell footer-compact">
+          <a class="footer-brand" href="index.html" aria-label="Ordnung für Deutschland – Startseite">${reversedBrand}</a>
+          <nav class="footer-links" aria-label="Service und Rechtliches"><a href="transparenz.html">Transparenz</a><a href="dokumente.html">Dokumente</a><a href="kontakt.html">Kontakt</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
         </div>
         <div class="shell footer-bottom">
-          <span>© <span data-year></span> Ordnung für Deutschland (OfD)</span>
-          <div><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+          <span>© <span data-year></span> Ordnung für Deutschland (OfD) · Gründungsinitiative</span>
+          <details class="footer-directory"><summary>Alle Seiten</summary><nav aria-label="Weitere Seiten">${navLinks(true)}<a href="team.html">Team & Verantwortung</a><a href="presse.html">Presse & Medien</a><a href="interesse.html">Interesse mitteilen</a><a href="mitmachen.html#fragen">Häufige Fragen</a></nav></details>
         </div>
       </footer>`;
   }
@@ -58,16 +58,24 @@
     document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
 
   const menuButton = document.querySelector(".menu-button");
+  const mobileMenu = document.querySelector(".mobile-nav");
   if (menuButton) {
+    mobileMenu.inert = true;
+    const closeMenu = () => {
+      document.body.classList.remove("menu-open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Menü öffnen");
+      mobileMenu.inert = true;
+    };
     menuButton.addEventListener("click", () => {
       const open = document.body.classList.toggle("menu-open");
       menuButton.setAttribute("aria-expanded", String(open));
       menuButton.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
+      mobileMenu.inert = !open;
     });
-    document.querySelectorAll(".mobile-nav a").forEach(link => link.addEventListener("click", () => {
-      document.body.classList.remove("menu-open");
-      menuButton.setAttribute("aria-expanded", "false");
-    }));
+    document.querySelectorAll(".mobile-nav a").forEach(link => link.addEventListener("click", closeMenu));
+    document.addEventListener("keydown", event => { if (event.key === "Escape" && document.body.classList.contains("menu-open")) { closeMenu(); menuButton.focus(); } });
+    matchMedia("(min-width: 1001px)").addEventListener("change", event => { if (event.matches) closeMenu(); });
   }
 
   const progress = document.querySelector(".page-progress span");
@@ -106,6 +114,13 @@
 
   const contactForm = document.querySelector("[data-contact-form]");
   if (contactForm) {
+    const messageField = contactForm.elements.message;
+    const characterCount = contactForm.querySelector("[data-character-count]");
+    const messageLimit = Number(messageField?.getAttribute("maxlength")) || 5000;
+    const updateCharacterCount = () => { if (characterCount && messageField) characterCount.textContent = `${messageField.value.length} / ${messageLimit.toLocaleString("de")} Zeichen`; };
+    messageField?.addEventListener("input", updateCharacterCount);
+    contactForm.addEventListener("reset", () => { if (characterCount) characterCount.textContent = `0 / ${messageLimit.toLocaleString("de")} Zeichen`; });
+    updateCharacterCount();
     const params = new URLSearchParams(location.search);
     const topicField = contactForm.elements.topic;
     const regionField = contactForm.elements.region;
