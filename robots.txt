@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+# Entwicklungsfassung: Indexierung erst nach Ergänzung und Prüfung der rechtlichen Angaben freigeben.
