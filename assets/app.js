@@ -8,7 +8,8 @@
     ["programm", "Programm", "programm.html"],
     ["verbaende", "Verbände", "verbaende.html"],
     ["aktuelles", "Aktuelles", "aktuelles.html"],
-    ["termine", "Termine", "termine.html"]
+    ["termine", "Termine", "termine.html"],
+    ["gruendung", "Gründung", "gruendung.html"]
   ];
 
   const navLinks = (mobile = false) => navItems.map(([id, label, href]) =>
@@ -21,7 +22,7 @@
       <header class="site-header">
         <div class="shell nav-wrap">
           <a class="brand" href="index.html" aria-label="Ordnung für Deutschland – Startseite">
-            <span class="brand-logo-wide" aria-hidden="true"><img src="assets/logos/ofd-horizontal.png" alt=""></span>
+            <span class="brand-logo-wide" aria-hidden="true"><picture><source srcset="assets/logos/ofd-horizontal.webp" type="image/webp"><img src="assets/logos/ofd-horizontal.png" alt=""></picture></span>
           </a>
           <nav class="main-nav" aria-label="Hauptnavigation">${navLinks()}</nav>
           <a class="nav-cta" href="mitmachen.html">Mitmachen</a>
@@ -38,13 +39,13 @@
         <div class="shell footer-main">
           <div>
             <a class="footer-brand-link" href="index.html" aria-label="Ordnung für Deutschland – Startseite">
-              <span class="footer-logo-lockup"><img src="assets/logos/ofd-primary-transparent.png" alt="Ordnung für Deutschland (OfD)" loading="lazy"></span>
+              <span class="footer-logo-lockup"><picture><source srcset="assets/logos/ofd-primary-transparent.webp" type="image/webp"><img src="assets/logos/ofd-primary-transparent.png" alt="Ordnung für Deutschland (OfD)" loading="lazy"></picture></span>
             </a>
             <p>Eine politische Initiative im Aufbau – für einen handlungsfähigen Staat, starke Kommunen und einen offenen demokratischen Dialog.</p>
             <span class="dev-badge">Gründungsphase 2026</span>
           </div>
           <div><h3>Partei</h3><ul><li><a href="partei.html">Über die OfD</a></li><li><a href="team.html">Team & Verantwortung</a></li><li><a href="programm.html">Programmentwurf</a></li><li><a href="verbaende.html">Verbände</a></li></ul></div>
-          <div><h3>Mitgestalten</h3><ul><li><a href="mitmachen.html">Mitmachen</a></li><li><a href="termine.html">Termine</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="mitmachen.html#fragen">Häufige Fragen</a></li></ul></div>
+          <div><h3>Mitgestalten</h3><ul><li><a href="mitmachen.html">Mitmachen</a></li><li><a href="gruendung.html">Gründungszentrum</a></li><li><a href="termine.html">Termine</a></li><li><a href="interesse.html">Interesse mitteilen</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="mitmachen.html#fragen">Häufige Fragen</a></li></ul></div>
           <div><h3>Service & Transparenz</h3><ul><li><a href="aktuelles.html">Aktuelles</a></li><li><a href="presse.html">Presse & Medien</a></li><li><a href="dokumente.html">Dokumente</a></li><li><a href="transparenz.html">Transparenz</a></li></ul></div>
         </div>
         <div class="shell footer-bottom">
@@ -115,6 +116,7 @@
 
     const makeText = data => [
       "OfD-Kontaktanfrage", "",
+      "Kontaktweg: " + (data.get("intent") || "general"),
       "Name: " + data.get("name"),
       "E-Mail: " + data.get("email"),
       "Thema: " + data.get("topic"),

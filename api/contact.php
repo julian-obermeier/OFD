@@ -42,12 +42,14 @@ $hits[]=$now;@file_put_contents($rateFile,json_encode($hits),LOCK_EX);
 
 $name=trim((string)($payload['name'] ?? ''));
 $email=trim((string)($payload['email'] ?? ''));
+$intent=trim((string)($payload['intent'] ?? 'general'));
 $topic=trim((string)($payload['topic'] ?? ''));
 $region=trim((string)($payload['region'] ?? ''));
 $message=trim((string)($payload['message'] ?? ''));
 $consent=($payload['consent'] ?? '')==='yes';
 if (mb_strlen($name)<2||mb_strlen($name)>120) respond(422,['ok'=>false,'message'=>'Bitte geben Sie einen gültigen Namen ein.']);
 if (!filter_var($email,FILTER_VALIDATE_EMAIL)||strlen($email)>190) respond(422,['ok'=>false,'message'=>'Bitte geben Sie eine gültige E-Mail-Adresse ein.']);
+if (!in_array($intent,['general','founding','region'],true)) respond(422,['ok'=>false,'message'=>'Bitte wählen Sie einen gültigen Kontaktweg.']);
 if (mb_strlen($topic)<2||mb_strlen($topic)>120||mb_strlen($region)>120) respond(422,['ok'=>false,'message'=>'Bitte prüfen Sie Thema und Region.']);
 if (mb_strlen($message)<10||mb_strlen($message)>5000) respond(422,['ok'=>false,'message'=>'Die Nachricht muss zwischen 10 und 5.000 Zeichen enthalten.']);
 if (!$consent) respond(422,['ok'=>false,'message'=>'Die Einwilligung zur Verarbeitung ist erforderlich.']);
@@ -55,8 +57,10 @@ if (!$consent) respond(422,['ok'=>false,'message'=>'Die Einwilligung zur Verarbe
 $safeName=str_replace(["\r","\n"],' ',$name);
 $safeEmail=str_replace(["\r","\n"],' ',$email);
 $safeTopic=str_replace(["\r","\n"],' ',$topic);
-$subject='OfD-Kontaktanfrage: '.$safeTopic;
-$body="Neue Anfrage über die OfD-Website\n\nName: {$safeName}\nE-Mail: {$safeEmail}\nThema: {$safeTopic}\nRegion: {$region}\nZeitpunkt: ".date('c')."\nEinwilligung: erteilt\n\nNachricht:\n{$message}\n";
+$intentLabels=['general'=>'Allgemeine Anfrage','founding'=>'Gründung mitgestalten','region'=>'Regionaler Aufbau'];
+$intentLabel=$intentLabels[$intent];
+$subject='OfD-'.$intentLabel.': '.$safeTopic;
+$body="Neue Anfrage über die OfD-Website\n\nKontaktweg: {$intentLabel}\nName: {$safeName}\nE-Mail: {$safeEmail}\nThema: {$safeTopic}\nRegion: {$region}\nZeitpunkt: ".date('c')."\nEinwilligung: erteilt\n\nNachricht:\n{$message}\n";
 $headers=[
     'From: OfD Website <'.$from.'>',
     'Reply-To: '.$safeName.' <'.$safeEmail.'>',

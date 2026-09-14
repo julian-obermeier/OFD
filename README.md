@@ -6,19 +6,26 @@ Professionelle, responsive statische Website für die Gründungsinitiative **Ord
 
 - Startseite mit Positionierung, Themen, Verbandsmodell und aktuellen Arbeitsständen
 - Partei und demokratischer Gründungsweg
-- transparenter Programmentwurf mit zwölf Themenfeldern
-- geplante Verbandsstruktur und Übersicht aller 16 Bundesländer
+- durchsuchbares Programm mit 50 Punkten in neun Themenbereichen
+- interaktive, ausdrücklich als geplant gekennzeichnete Verbandsstruktur für alle 16 Bundesländer
+- Gründungszentrum mit vier Phasen, Checkliste und FAQ
+- getrennte Interessenten- und Kontaktwege für Programm, Gründung und Regionalaufbau
 - Gründungsjournal / Aktuelles
 - Mitmachen mit FAQ
-- datenschutzfreundliche Kontaktvorbereitung
-- Team, Termine, Presse, Dokumenten- und Transparenzportal
+- datenschutzfreundliche Kontaktvorbereitung und versioniertes Dokumentenregister
+- Team, Termine, Presse- und Transparenzportal
 - dynamische regionale Bereiche für alle 16 Bundesländer
 - sicher vorbereitetes PHP-Kontaktformular für klassisches Webhosting
+- Social-Media-Vorschaubild, optimierte WebP-Logos und XML-Sitemap
 - Impressum, Datenschutz und 404-Seite
 
 ## Technik
 
 Reines HTML, CSS und JavaScript ohne Build-Prozess, Frameworks, Cookies, Tracker oder externe Schriftarten. Die Dateien können direkt auf klassischem Webhosting oder über GitHub Pages bereitgestellt werden.
+
+Die kanonischen URLs, Open-Graph-Daten und die Sitemap verwenden derzeit
+`https://julian-obermeier.github.io/OFD/`. Bei einem späteren eigenen Domainnamen
+müssen diese Werte gesammelt angepasst werden.
 
 ## Lokale Vorschau
 
@@ -41,7 +48,11 @@ Repository herunterladen und `index.html` im Browser öffnen. Für eine realisti
 ├── index.html
 ├── partei.html
 ├── programm.html
+├── dokumente.html
+├── gruendung.html
+├── interesse.html
 ├── verbaende.html
+├── verband.html
 ├── aktuelles.html
 ├── mitmachen.html
 ├── kontakt.html
@@ -51,13 +62,22 @@ Repository herunterladen und `index.html` im Browser öffnen. Für eine realisti
 └── assets/
     ├── styles.css
     ├── app.js
+    ├── program.js
+    ├── documents.js
+    ├── associations.js
+    ├── interest.js
     ├── favicon.svg
-    └── logos/ (offizielle OfD-Varianten)
+    ├── social-share.png
+    └── logos/ (offizielle OfD-Varianten, PNG und WebP)
 ```
 
 ## Inhaltsstatus
 
 Alle politischen Inhalte sind ausdrücklich als Arbeitsstand bzw. Programmentwurf gekennzeichnet. Formale Funktionen, gegründete Verbände und verbindliche Beschlüsse werden nicht vorgetäuscht.
+
+Die öffentliche Verbändekarte nennt deshalb aktuell ausschließlich den Status
+„Geplant“. Erst nach einer tatsächlich erfolgten Gründung dürfen diese Angaben
+auf „Gegründet“ geändert werden.
 
 
 ## PHP-Kontaktversand auf dem Webhosting
@@ -67,5 +87,10 @@ Alle politischen Inhalte sind ausdrücklich als Arbeitsstand bzw. Programmentwur
 3. Prüfen, ob PHP `mail()` beim Hosting aktiviert ist.
 4. Datenschutz- und Impressumsangaben vervollständigen.
 5. Formular testen; die echte Konfigurationsdatei wird nicht in Git eingecheckt.
+
+Das Formular übergibt zusätzlich den ausgewählten Kontaktweg (`general`,
+`founding` oder `region`) an `api/contact.php`. Vor dem Livegang auf dem
+Hosting einmal `php -l api/contact.php` ausführen und den Versand mit einer
+Testadresse prüfen.
 
 Die mitgelieferte `.htaccess` aktiviert HTTPS-Weiterleitung, Sicherheitsheader, Caching und Verzeichnisschutz auf kompatiblem Apache-Webhosting.
