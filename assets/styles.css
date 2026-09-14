@@ -360,3 +360,33 @@ details.standard-card p{padding:0 27px 23px;margin:0}
 .contact-routing{display:grid;gap:5px;margin-top:25px;padding:20px 22px;background:var(--soft);border-left:3px solid var(--gold);border-radius:0 10px 10px 0}.contact-routing strong{color:var(--navy);font:700 17px Georgia,serif}.contact-routing span{color:var(--muted);font-size:12px}.contact-routing .text-link{width:max-content;margin-top:7px}
 @media(max-width:1000px){.interest-layout{grid-template-columns:1fr}.interest-aside{position:static}}
 @media(max-width:700px){.interest-switcher{grid-template-columns:1fr;gap:7px;margin-bottom:32px}.interest-switcher button,.interest-switcher button:first-child,.interest-switcher button:last-child{border:1px solid var(--line);border-radius:9px}.interest-switcher button[aria-pressed="true"]{border-color:var(--red)}.interest-heading h2{font-size:36px}}
+
+/* OfD V3: real Germany map and district explorer */
+.real-map-stage{position:relative;min-height:520px;display:grid;place-items:center;padding:8px 0;background:radial-gradient(circle at 48% 42%,#fff 0,#f5f8fa 70%,#edf2f5 100%);border-radius:14px;overflow:hidden}
+.real-map-stage .germany-map{width:100%;height:auto;max-height:680px;overflow:visible}
+.real-map-stage .map-state-layer,.real-map-stage .map-district-layer,.real-map-stage .map-state-label-layer{vector-effect:non-scaling-stroke}
+.real-map-stage .map-state-region{fill:#d4e0e8;stroke:#fff;stroke-width:1.7;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .18s,opacity .18s}
+.real-map-stage .map-state-region:hover,.real-map-stage .map-state-region:focus{fill:#a8bfd0;outline:none}
+.real-map-stage .map-state-region:focus{stroke:var(--gold);stroke-width:3}
+.real-map-stage .map-state-region.map-state-selected{fill:var(--red);stroke:#fff}
+.real-map-stage .map-district{fill:rgba(255,255,255,.04);stroke:#fff;stroke-width:.65;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .18s,opacity .18s,stroke .18s}
+.real-map-stage .map-district:hover,.real-map-stage .map-district:focus{fill:rgba(240,180,41,.45);stroke:var(--gold);stroke-width:1.5;outline:none}
+.real-map-stage .map-district.map-state-district{stroke:#f9fbfc;stroke-width:.8}
+.real-map-stage .map-district.map-district-selected{fill:rgba(217,46,55,.8);stroke:#fff;stroke-width:1.4}
+.real-map-stage .map-dimmed{opacity:.18}
+.real-map-stage .map-state-label-layer{pointer-events:none}
+.real-map-stage .map-state-label{fill:#314a61;font:700 9px Inter,ui-sans-serif,sans-serif;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.real-map-stage .map-state-label-selected{fill:var(--red)}
+.map-loading,.map-error{width:100%;padding:56px 20px;text-align:center;color:var(--muted);font-size:13px}
+.map-error{display:grid;gap:8px;color:#9e1d27;background:#fff5f5;border:1px solid #f2c7ca;border-radius:12px}
+.map-error strong{color:#8f1822;font:700 18px Georgia,serif}
+.map-legend{display:flex;gap:13px;flex-wrap:wrap;margin-top:15px;color:#68788a;font-size:10px;font-weight:800}
+.map-legend span{display:inline-flex;align-items:center;gap:6px}.map-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;border:1px solid #fff;box-shadow:0 0 0 1px #bbc7d0}.legend-state{background:#d4e0e8}.legend-district{background:#f8fafb}.legend-selected{background:var(--red)}
+.map-attribution{margin:14px 0 0;color:#8b98a5;font-size:10px}.map-attribution a{color:var(--blue);text-decoration:underline}
+.district-explorer{margin-top:34px;padding-top:28px;border-top:1px solid var(--line)}
+.district-heading{font:700 28px/1.2 Georgia,serif;color:var(--navy);margin:13px 0 14px}
+.district-selected{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 16px;padding:11px 13px;border-left:3px solid var(--gold);background:#fff9e9;color:#6b5a30;font-size:11px}.district-selected strong{color:var(--navy);font-size:12px}.district-selected span{color:#877348}
+.district-search{position:relative;display:block;margin-bottom:14px}.district-search svg{position:absolute;left:13px;top:50%;width:19px;height:19px;transform:translateY(-50%);fill:none;stroke:var(--navy);stroke-width:1.8;pointer-events:none}.district-search input{width:100%;min-height:45px;padding:0 13px 0 42px;border:1px solid #bdcbd8;border-radius:9px;background:#fff;color:var(--ink);font-size:12px}.district-search input:focus{outline:3px solid rgba(22,77,122,.15);border-color:var(--blue)}
+.district-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:420px;overflow:auto;padding-right:3px}.district-item{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy);text-align:left;cursor:pointer;transition:.18s}.district-item:hover,.district-item:focus-visible,.district-item.selected{border-color:#d3ae43;background:#fff8e7;outline:none}.district-item span{min-width:0}.district-item b,.district-item small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.district-item b{font-size:10px}.district-item small{margin-top:2px;color:#8a96a4;font-size:8px;text-transform:uppercase;letter-spacing:.5px}.district-item>i{flex:0 0 auto;color:var(--red);font-style:normal;font-size:13px}.district-list+.program-empty{margin-top:12px;padding:28px 15px}.district-list+.program-empty h3{font-size:21px;margin-bottom:6px}
+@media(max-width:1000px){.real-map-stage{min-height:440px}.district-list{max-height:360px}}
+@media(max-width:700px){.real-map-stage{min-height:350px;padding:3px}.real-map-stage .map-state-label{font-size:7px}.map-legend{gap:9px;font-size:9px}.map-attribution{line-height:1.45}.district-list{grid-template-columns:1fr;max-height:440px}.district-heading{font-size:24px}.district-selected{align-items:flex-start;flex-direction:column;gap:3px}}

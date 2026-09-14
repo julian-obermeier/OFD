@@ -8,6 +8,7 @@ Professionelle, responsive statische Website für die Gründungsinitiative **Ord
 - Partei und demokratischer Gründungsweg
 - durchsuchbares Programm mit 50 Punkten in neun Themenbereichen
 - interaktive, ausdrücklich als geplant gekennzeichnete Verbandsstruktur für alle 16 Bundesländer
+- echte Deutschlandkarte mit 16 Bundesländern und 434 Landkreisen bzw. kreisfreien Städten
 - Gründungszentrum mit vier Phasen, Checkliste und FAQ
 - getrennte Interessenten- und Kontaktwege für Programm, Gründung und Regionalaufbau
 - Gründungsjournal / Aktuelles
@@ -82,6 +83,7 @@ Schritt 1–2 noch fehlen.
     ├── documents.js
     ├── associations.js
     ├── interest.js
+    ├── germany-map.svg (lokal vereinfachte Verwaltungsgeometrien)
     ├── favicon.svg
     ├── social-share.png
     └── logos/ (offizielle OfD-Varianten, PNG und WebP)
@@ -94,6 +96,12 @@ Alle politischen Inhalte sind ausdrücklich als Arbeitsstand bzw. Programmentwur
 Die öffentliche Verbändekarte nennt deshalb aktuell ausschließlich den Status
 „Geplant“. Erst nach einer tatsächlich erfolgten Gründung dürfen diese Angaben
 auf „Gegründet“ geändert werden.
+
+Die Kartengeometrien stammen aus dem offenen Datensatz
+[`deutschlandGeoJSON`](https://github.com/isellsoap/deutschlandGeoJSON) und werden
+als lokal eingebettete, vereinfachte SVG-Datei ausgeliefert. Die Karte enthält
+die 16 Bundesländer sowie 434 Landkreise und kreisfreie Städte; externe
+Kartendienste oder JavaScript-CDNs werden dafür nicht benötigt.
 
 
 ## PHP-Kontaktversand auf dem Webhosting
