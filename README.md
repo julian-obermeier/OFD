@@ -11,6 +11,9 @@ Professionelle, responsive statische Website für die Gründungsinitiative **Ord
 - Gründungsjournal / Aktuelles
 - Mitmachen mit FAQ
 - datenschutzfreundliche Kontaktvorbereitung
+- Team, Termine, Presse, Dokumenten- und Transparenzportal
+- dynamische regionale Bereiche für alle 16 Bundesländer
+- sicher vorbereitetes PHP-Kontaktformular für klassisches Webhosting
 - Impressum, Datenschutz und 404-Seite
 
 ## Technik
@@ -55,3 +58,14 @@ Repository herunterladen und `index.html` im Browser öffnen. Für eine realisti
 ## Inhaltsstatus
 
 Alle politischen Inhalte sind ausdrücklich als Arbeitsstand bzw. Programmentwurf gekennzeichnet. Formale Funktionen, gegründete Verbände und verbindliche Beschlüsse werden nicht vorgetäuscht.
+
+
+## PHP-Kontaktversand auf dem Webhosting
+
+1. `api/contact-config.example.php` als `api/contact-config.php` kopieren.
+2. Empfänger- und Absenderadresse eintragen.
+3. Prüfen, ob PHP `mail()` beim Hosting aktiviert ist.
+4. Datenschutz- und Impressumsangaben vervollständigen.
+5. Formular testen; die echte Konfigurationsdatei wird nicht in Git eingecheckt.
+
+Die mitgelieferte `.htaccess` aktiviert HTTPS-Weiterleitung, Sicherheitsheader, Caching und Verzeichnisschutz auf kompatiblem Apache-Webhosting.

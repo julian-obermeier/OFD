@@ -7,7 +7,8 @@
     ["partei", "Partei", "partei.html"],
     ["programm", "Programm", "programm.html"],
     ["verbaende", "Verbände", "verbaende.html"],
-    ["aktuelles", "Aktuelles", "aktuelles.html"]
+    ["aktuelles", "Aktuelles", "aktuelles.html"],
+    ["termine", "Termine", "termine.html"]
   ];
 
   const navLinks = (mobile = false) => navItems.map(([id, label, href]) =>
@@ -37,14 +38,14 @@
         <div class="shell footer-main">
           <div>
             <a class="footer-brand-link" href="index.html" aria-label="Ordnung für Deutschland – Startseite">
-              <span class="footer-logo-lockup"><img src="assets/logos/ofd-primary-transparent.png" alt="Ordnung für Deutschland (OfD)"></span>
+              <span class="footer-logo-lockup"><img src="assets/logos/ofd-primary-transparent.png" alt="Ordnung für Deutschland (OfD)" loading="lazy"></span>
             </a>
             <p>Eine politische Initiative im Aufbau – für einen handlungsfähigen Staat, starke Kommunen und einen offenen demokratischen Dialog.</p>
             <span class="dev-badge">Gründungsphase 2026</span>
           </div>
-          <div><h3>Partei</h3><ul><li><a href="partei.html">Über die OfD</a></li><li><a href="programm.html">Programmentwurf</a></li><li><a href="verbaende.html">Verbände</a></li><li><a href="aktuelles.html">Aktuelles</a></li></ul></div>
-          <div><h3>Mitgestalten</h3><ul><li><a href="mitmachen.html">Mitmachen</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="mitmachen.html#fragen">Häufige Fragen</a></li></ul></div>
-          <div><h3>Rechtliches</h3><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li><li><a href="kontakt.html">Kontaktstelle</a></li></ul></div>
+          <div><h3>Partei</h3><ul><li><a href="partei.html">Über die OfD</a></li><li><a href="team.html">Team & Verantwortung</a></li><li><a href="programm.html">Programmentwurf</a></li><li><a href="verbaende.html">Verbände</a></li></ul></div>
+          <div><h3>Mitgestalten</h3><ul><li><a href="mitmachen.html">Mitmachen</a></li><li><a href="termine.html">Termine</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="mitmachen.html#fragen">Häufige Fragen</a></li></ul></div>
+          <div><h3>Service & Transparenz</h3><ul><li><a href="aktuelles.html">Aktuelles</a></li><li><a href="presse.html">Presse & Medien</a></li><li><a href="dokumente.html">Dokumente</a></li><li><a href="transparenz.html">Transparenz</a></li></ul></div>
         </div>
         <div class="shell footer-bottom">
           <span>© <span data-year></span> Ordnung für Deutschland (OfD)</span>
@@ -53,7 +54,7 @@
       </footer>`;
   }
 
-  document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
+    document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
 
   const menuButton = document.querySelector(".menu-button");
   if (menuButton) {
@@ -104,27 +105,69 @@
 
   const contactForm = document.querySelector("[data-contact-form]");
   if (contactForm) {
+    const params = new URLSearchParams(location.search);
+    const topicField = contactForm.elements.topic;
+    const regionField = contactForm.elements.region;
+    const startedField = contactForm.elements.started_at;
+    if (params.get("topic") && topicField) topicField.value = params.get("topic");
+    if (params.get("region") && regionField) regionField.value = params.get("region");
+    if (startedField) startedField.value = String(Math.floor(Date.now() / 1000));
+
+    const makeText = data => [
+      "OfD-Kontaktanfrage", "",
+      "Name: " + data.get("name"),
+      "E-Mail: " + data.get("email"),
+      "Thema: " + data.get("topic"),
+      "Region: " + (data.get("region") || "–"), "",
+      data.get("message")
+    ].join("\n");
+
+    const copyFallback = async data => {
+      try {
+        await navigator.clipboard.writeText(makeText(data));
+        return true;
+      } catch (_) { return false; }
+    };
+
     contactForm.addEventListener("submit", async event => {
       event.preventDefault();
       if (!contactForm.reportValidity()) return;
       const data = new FormData(contactForm);
-      const text = [
-        "OfD-Kontaktanfrage",
-        "",
-        "Name: " + data.get("name"),
-        "E-Mail: " + data.get("email"),
-        "Thema: " + data.get("topic"),
-        "",
-        data.get("message")
-      ].join("\n");
-      let copied = false;
-      try { await navigator.clipboard.writeText(text); copied = true; } catch (_) {}
       const status = contactForm.querySelector(".form-status");
-      status.textContent = copied
-        ? "Ihre Anfrage wurde als Text kopiert. Die zentrale Kontaktadresse wird nach der formalen Gründung veröffentlicht; Sie können den Text dann direkt verwenden."
-        : "Ihre Anfrage ist vorbereitet. Die zentrale Kontaktadresse wird nach der formalen Gründung veröffentlicht.";
-      status.classList.add("show");
-      status.focus();
+      const button = contactForm.querySelector('button[type="submit"]');
+      const preview = location.protocol === "file:" || /githack|github\.io$/i.test(location.hostname);
+      status.className = "form-status show working";
+      status.textContent = "Ihre Nachricht wird verarbeitet …";
+      button.disabled = true;
+
+      if (preview) {
+        const copied = await copyFallback(data);
+        status.className = "form-status show";
+        status.textContent = copied
+          ? "Vorschaumodus: Die Nachricht wurde lokal in die Zwischenablage kopiert."
+          : "Vorschaumodus: Es wurden keine Daten übertragen. Der Versand steht auf dem späteren Webhosting zur Verfügung.";
+        button.disabled = false;
+        status.focus();
+        return;
+      }
+
+      try {
+        const response = await fetch("api/contact.php", { method: "POST", body: data, headers: { "Accept": "application/json" } });
+        const result = await response.json().catch(() => ({ ok: false, message: "Ungültige Serverantwort." }));
+        if (!response.ok || !result.ok) throw new Error(result.message || "Versand fehlgeschlagen.");
+        status.className = "form-status show";
+        status.textContent = result.message;
+        contactForm.reset();
+        if (startedField) startedField.value = String(Math.floor(Date.now() / 1000));
+      } catch (error) {
+        const copied = await copyFallback(data);
+        status.className = "form-status show error";
+        status.textContent = (error.message || "Die Nachricht konnte nicht versendet werden.") +
+          (copied ? " Der Nachrichtentext wurde deshalb in die Zwischenablage kopiert." : "");
+      } finally {
+        button.disabled = false;
+        status.focus();
+      }
     });
   }
 })();
