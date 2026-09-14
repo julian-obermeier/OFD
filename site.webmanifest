@@ -1,0 +1,12 @@
+{
+  "name":"Ordnung für Deutschland",
+  "short_name":"OfD",
+  "description":"Offizielle Website der Gründungsinitiative Ordnung für Deutschland.",
+  "start_url":"index.html",
+  "display":"standalone",
+  "background_color":"#071a31",
+  "theme_color":"#071a31",
+  "icons":[
+    {"src":"assets/favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
