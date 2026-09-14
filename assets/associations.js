@@ -108,6 +108,7 @@
     const state = states[selected];
     mapStates.forEach(item => item.classList.toggle("map-state-selected", item.dataset.mapState === selected));
     mapLabels.forEach(item => item.classList.toggle("map-state-label-selected", item.dataset.stateLabel === selected));
+    mapDistricts.forEach(item => item.classList.toggle("map-district-selected", Boolean(selectedDistrict) && item.dataset.districtKey === selectedDistrict));
     mapDistricts.forEach(item => item.classList.toggle("map-state-district", item.dataset.stateKey === selected));
     items.forEach(item => item.classList.toggle("selected", item.dataset.state === selected));
     if (title) title.textContent = state.name;
