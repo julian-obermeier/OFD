@@ -31,6 +31,22 @@ müssen diese Werte gesammelt angepasst werden.
 
 Repository herunterladen und `index.html` im Browser öffnen. Für eine realistische Vorschau empfiehlt sich ein einfacher lokaler HTTP-Server.
 
+## GitHub-Pages-Deployment
+
+Der Workflow liegt unter `.github/workflows/pages.yml` und veröffentlicht die
+statische Website nach jedem Push auf `main`. Beim ersten Einsatz muss die
+Pages-Site einmal im Repository aktiviert werden:
+
+1. GitHub-Repository öffnen: **Settings → Pages**.
+2. Unter **Build and deployment** als Quelle **GitHub Actions** auswählen und speichern.
+3. Den Workflow unter **Actions → Deploy OfD website to GitHub Pages** erneut starten.
+4. Die Vorschau ist anschließend unter `https://julian-obermeier.github.io/OFD/` erreichbar.
+
+Der Workflow kann die Pages-Site aus Sicherheitsgründen nicht selbst für ein
+Repository anlegen, in dem sie noch deaktiviert ist. Ein fehlgeschlagener erster
+Lauf mit `Resource not accessible by integration` bedeutet daher nur, dass
+Schritt 1–2 noch fehlen.
+
 ## Vor öffentlicher Veröffentlichung zwingend erledigen
 
 - vollständige Anbieterkennzeichnung mit ladungsfähiger Anschrift ergänzen
