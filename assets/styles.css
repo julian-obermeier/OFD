@@ -213,3 +213,24 @@ details.standard-card p{padding:0 27px 23px;margin:0}
 }
 @media(max-width:430px){.state-grid{grid-template-columns:1fr}.footer-main{grid-template-columns:1fr}.footer-main>div:first-child,.footer-main>div:last-child{grid-column:auto}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}[data-reveal]{opacity:1;transform:none}}
+
+/* Official OfD brand assets */
+.brand-logo-wide{position:relative;display:block;flex:0 0 270px;width:270px;height:54px;overflow:hidden}
+.brand .brand-logo-wide img{position:absolute;left:0;top:50%;width:270px;height:auto;max-width:none;transform:translateY(-50%)}
+.footer-brand-link{display:inline-block;margin-bottom:22px}
+.footer-logo-lockup{position:relative;display:block;width:270px;height:100px;overflow:hidden;background:#fff;border-radius:14px;box-shadow:0 15px 35px rgba(0,0,0,.2)}
+.footer-logo-lockup img{position:absolute;left:0;top:50%;width:270px;height:auto;max-width:none;transform:translateY(-50%)}
+.official-brand-card{background:linear-gradient(145deg,#fff,#edf3f8);border-color:rgba(255,255,255,.5);transform:rotate(1.5deg)}
+.official-brand-card .manifest-top{color:#667488}
+.official-brand-card .manifest-top strong{color:#b57a00}
+.official-brand-card .manifest-copy{border-top-color:#dce3ea;color:#445468}
+.official-logo-stage{height:310px;display:grid;place-items:center;overflow:hidden}
+.official-logo-stage img{width:115%;max-width:none;height:auto}
+@media(max-width:700px){
+  .brand-logo-wide{flex-basis:215px;width:215px;height:44px}
+  .brand .brand-logo-wide img{width:215px}
+}
+@media(max-width:380px){
+  .brand-logo-wide{flex-basis:190px;width:190px}
+  .brand .brand-logo-wide img{width:190px}
+}

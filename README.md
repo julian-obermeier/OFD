@@ -48,8 +48,8 @@ Repository herunterladen und `index.html` im Browser öffnen. Für eine realisti
 └── assets/
     ├── styles.css
     ├── app.js
-    ├── logo.svg
-    └── favicon.svg
+    ├── favicon.svg
+    └── logos/ (offizielle OfD-Varianten)
 ```
 
 ## Inhaltsstatus

@@ -20,8 +20,7 @@
       <header class="site-header">
         <div class="shell nav-wrap">
           <a class="brand" href="index.html" aria-label="Ordnung für Deutschland – Startseite">
-            <img src="assets/logo.svg" alt="">
-            <span class="brand-copy"><b>Ordnung für Deutschland</b><small>OfD · Verantwortung verbindet</small></span>
+            <span class="brand-logo-wide" aria-hidden="true"><img src="assets/logos/ofd-horizontal.png" alt=""></span>
           </a>
           <nav class="main-nav" aria-label="Hauptnavigation">${navLinks()}</nav>
           <a class="nav-cta" href="mitmachen.html">Mitmachen</a>
@@ -37,9 +36,8 @@
       <footer class="site-footer">
         <div class="shell footer-main">
           <div>
-            <a class="brand footer-brand" href="index.html">
-              <img src="assets/logo.svg" alt="">
-              <span class="brand-copy"><b>Ordnung für Deutschland</b><small>OfD · Verantwortung verbindet</small></span>
+            <a class="footer-brand-link" href="index.html" aria-label="Ordnung für Deutschland – Startseite">
+              <span class="footer-logo-lockup"><img src="assets/logos/ofd-primary-transparent.png" alt="Ordnung für Deutschland (OfD)"></span>
             </a>
             <p>Eine politische Initiative im Aufbau – für einen handlungsfähigen Staat, starke Kommunen und einen offenen demokratischen Dialog.</p>
             <span class="dev-badge">Gründungsphase 2026</span>
